@@ -13,7 +13,7 @@
   "license": "ISC",
   "author": "",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "public/src/html/index.js",
   "scripts": {
     "test": "node index.js"
   },

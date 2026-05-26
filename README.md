@@ -8,7 +8,11 @@ git clone https://github.com/2025150057/IP-City-Rest-Map
 
 after cloning, (make sure you are in 
 right folder) type
-npm dev
+npm install
+for installing requirements(currently express.js)
+
+type
+npm index.js
 for developer launching. (also, make sure
 requirements are set)
 
@@ -24,6 +28,35 @@ and make any progress in there, send a merge request.
 
  - for frontend devs, Good Luck! :) you're free to use any api's if needed, but you should include d3.js and sigma.js, as we've noted at pdf document.
  Though I've put some sample design images in that pdf, of course, if needed, you can ignore it without feeling any guilty. Those are just temporary images.
+
+# HOW TO COMMIT (git tutorial for me)
+
+in git bash, (make sure you're in right folder which has .git folder. if not, use cd ../ and cd {filename} to move to right folder.)
+1. make new branch.
+git branch {branchname ex)dev/test}
+
+if you want, you can type 
+git branch
+to check a branch you have made exists.
+
+2. switch to that branch.
+git checkout {branchname}
+
+3. pull datas from origin.
+git pull origin {branchname}
+
+4. make some changes.
+
+5. apply differences to local branch.
+git add .
+
+6. make commit message
+git commit -m "{message}"
+
+7. push to remote branch.
+git push origin {branchname}
+
+
 
 
 if you have any question about this project, 

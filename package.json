@@ -1,0 +1,23 @@
+{
+  "name": "ip-city-rest",
+  "version": "1.0.0",
+  "description": "a package for ip team project",
+  "homepage": "https://github.com/2025150057/IP-City-Rest-Map#readme",
+  "bugs": {
+    "url": "https://github.com/2025150057/IP-City-Rest-Map/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2025150057/IP-City-Rest-Map.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

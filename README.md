@@ -56,7 +56,9 @@ git commit -m "{message}"
 7. push to remote branch.
 git push origin {branchname}
 
+8. if needed, make PR(pull request) to origin's main branch.
 
+this can be done in github website.
 
 
 if you have any question about this project, 

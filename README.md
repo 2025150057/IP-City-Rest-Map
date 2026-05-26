@@ -8,7 +8,7 @@ git clone https://github.com/2025150057/IP-City-Rest-Map
 
 after cloning, (make sure you are in 
 right folder) type
-pnpm dev
+npm dev
 for developer launching. (also, make sure
 requirements are set)
 
@@ -17,7 +17,7 @@ make a new branch start with dev.
 ex) dev/backend/seoulcityapi
 and make any progress in there, send a merge request.
 
- - for backend devs, We're currently using 'Hono' for backend stuff, so https://hono.dev/docs/getting-started/basic might help you.
+ - for backend devs, We're currently using 'express' and 'node.js' for backend stuff, to ensure this lecture's materials help you.
 
  it's a good practice to write comments to almost every functions and objects since we're using JS instead of Typescript, but you may not, if you feel abundant or just being tired of writing comments. in that case, please just comment #TODO, and I'll later put comments on that or else. 
  

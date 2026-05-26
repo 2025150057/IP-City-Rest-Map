@@ -1,1 +1,11 @@
-.env
+# Dependencies and logs
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment and Build files
+.env*
+dist/
+coverage/
+.nyc_output/

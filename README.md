@@ -8,7 +8,11 @@ git clone https://github.com/2025150057/IP-City-Rest-Map
 
 after cloning, (make sure you are in 
 right folder) type
-npm dev
+npm install
+for installing requirements(currently express.js)
+
+type
+npm index.js
 for developer launching. (also, make sure
 requirements are set)
 

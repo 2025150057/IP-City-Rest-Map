@@ -23,5 +23,11 @@
             "head_sampling_rate": 1
         }
     },
-    "preview_urls": true,
+    "preview-urls": true,
+    //defining build settings
+    "build": {
+        "command": "npm test",
+        "cwd": ".",
+        "watch_dir": "public/src"
+    }
 }

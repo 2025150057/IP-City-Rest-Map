@@ -1,6 +1,6 @@
 {
     "$schema": "./node_modules/wrangler/config-schema.json",
-    "name": "ip-city-rest-map",
+    "name": "ip-city-rest-map-revive",
     "compatibility_date": "2026-05-31",
     "assets": {
         "directory": "./public/src"
@@ -23,10 +23,9 @@
             "head_sampling_rate": 1
         }
     },
-    "preview-urls": true,
     //defining build settings
     "build": {
-        "command": "npm run",
+        "command": "npm test",
         "cwd": ".",
         "watch_dir": "public/src"
     }

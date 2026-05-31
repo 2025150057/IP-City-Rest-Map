@@ -12,7 +12,7 @@ npm install
 for installing requirements(currently express.js)
 
 type
-npm index.js
+npm run dev
 for developer launching. (also, make sure
 requirements are set)
 
@@ -23,7 +23,14 @@ and make any progress in there, send a merge request.
 
  - for backend devs, We're currently using 'express' and 'node.js' for backend stuff, to ensure this lecture's materials help you.
 
+ - also, we're currently running our server with cloudflare, managed by me. 
+  whole project is deployed at https://ip-city-rest-map-revive.dhs2025.workers.dev/ 
+  if you need to update deployed version, just email to dhs2025@yonsei.ac.kr or ask me to get a permission in
+  cloudflare dashboard. 
+
  it's a good practice to write comments to almost every functions and objects since we're using JS instead of Typescript, but you may not, if you feel abundant or just being tired of writing comments. in that case, please just comment #TODO, and I'll later put comments on that or else. 
+
+ - + search about JSDOC, which is a helpful tool to document js objects.
  
 
  - for frontend devs, Good Luck! :) you're free to use any api's if needed, but you should include d3.js and sigma.js, as we've noted at pdf document.

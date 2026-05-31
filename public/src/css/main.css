@@ -4,3 +4,14 @@ body {
     /* for test*/
     background-color: aquamarine;
 }
+
+
+@media (width > 1400px){
+
+}
+@media (1400px > width > 800px){
+
+}
+@media (width < 801px){
+
+}

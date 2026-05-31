@@ -24,3 +24,8 @@ Followed by a pdf's service scenario.
 4. user chooses a place.
 5. server sends a detailed datas, and server modifies weights.
 6. user modifies weights.
+
+# frontend work
+0. design front-end.
+1. get places data and show it at graph using d3.js and sigma.js
+

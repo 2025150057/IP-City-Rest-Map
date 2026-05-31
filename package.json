@@ -16,7 +16,8 @@
   "main": "public/src/html/index.js",
   "scripts": {
     "test": "node index.js",
-    "dev": "NODE_ENV=development node --watch --watch-path=./public/src --watch-path=./index.js index.js"
+    "dev": "NODE_ENV=development node --watch --watch-path=./public/src --watch-path=./index.js index.js",
+    "run": "node index.js"
   },
   "dependencies": {
     "express": "^5.2.1",

@@ -1,9 +1,13 @@
 {
+    "$schema": "./node_modules/wrangler/config-schema.json",
     "name": "ip-city-rest-map",
     "compatibility_date": "2026-05-31",
     "assets": {
         "directory": "./public/src"
     },
+    "compatibility_flags": [
+        "nodejs_compat"
+    ],
     "observability": {
         "enabled": true,
         "head_sampling_rate": 1,
@@ -19,5 +23,5 @@
             "head_sampling_rate": 1
         }
     },
-    "preview-urls" : true
+    "preview_urls": true,
 }

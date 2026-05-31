@@ -1,31 +1,19 @@
 {
-  "name": "ip-city-rest",
-  "version": "1.0.0",
-  "description": "a package for ip team project",
-  "homepage": "https://github.com/2025150057/IP-City-Rest-Map#readme",
-  "bugs": {
-    "url": "https://github.com/2025150057/IP-City-Rest-Map/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/2025150057/IP-City-Rest-Map.git"
-  },
-  "license": "ISC",
-  "author": "",
-  "type": "commonjs",
-  "main": "public/src/html/index.js",
+  "name": "ip-city-rest-map-revive",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "node index.js",
-    "dev": "NODE_ENV=development node --watch --watch-path=./public/src --watch-path=./index.js index.js",
-    "run": "node index.js"
-  },
-  "dependencies": {
-    "express": "^5.2.1",
-    "nodemon": "^3.1.14"
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "test": "vitest"
   },
   "devDependencies": {
-    "@types/express": "^5.0.6",
-    "prettier": "^3.8.3",
+    "@cloudflare/vitest-pool-workers": "^0.16.10",
+    "vitest": "~3.2.0",
     "wrangler": "^4.95.0"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
   }
 }

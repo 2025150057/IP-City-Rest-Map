@@ -2,17 +2,15 @@
 
 console.log("worked");
 
-function getLoc() {
-    /* GET USER's current location by geolocation api.
-    INPUT: NONE
-    OUTPUT: Object containing latitude and longitude
-    {
-        latitude: Number,
-        longitude: Number
-    }
-    throw error if geolocation function failed or user rejected the permission.
-    note that this function takes 5~10 sec. 
+/** GET USER's current location by geolocation api.
+ *  @constructor
+ *  INPUT: NONE
+ *  @returns {Number, Number}
+ *  throw error if geolocation function failed or user rejected the permission.
+ *  note that this function takes 5~10 sec. 
     */
+function getLoc() {
+    
     return new Promise((resolve, reject) => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(

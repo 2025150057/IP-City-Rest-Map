@@ -26,7 +26,7 @@
     "preview-urls": true,
     //defining build settings
     "build": {
-        "command": "npm test",
+        "command": "npm run",
         "cwd": ".",
         "watch_dir": "public/src"
     }

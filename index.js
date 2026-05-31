@@ -33,7 +33,8 @@ app.use(json());
 
 //handle localhost get method.
 app.get("/", (req, res) => {
-    res.sendFile(join(__dirname, "public/src/html/index.html"));
+    console.log("working :)");
+    res.sendFile("index.html");
 });
 
 //default port = 8000.

@@ -2,10 +2,48 @@
 
 console.log("worked");
 
+function getLoc() {
+    /* GET USER's current location by geolocation api.
+    INPUT: NONE
+    OUTPUT: Object containing latitude and longitude
+    {
+        latitude: Number,
+        longitude: Number
+    }
+    throw error if geolocation function failed or user rejected the permission.
+    note that this function takes 5~10 sec. 
+    */
+    return new Promise((resolve, reject) => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    console.log("success at getLOC");
+                    // Return an object containing both coordinates
+                    resolve({
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude
+                    });
+                },
+                (error) => {
+                    console.error("ERR at getLOC!", error);
+                    reject(error);
+                }
+            );
+        } else {
+            reject(new Error("Geolocation is not supported by this browser, or user rejected the permission"));
+        }
+    });
+}
 
+// Example of how to use it synchronously with async/await
+async function run() {
+    // just a test func.
+    try {
+        const coords = await getLoc();
+        console.log("Latitude:", coords.latitude, "Longitude:", coords.longitude);
+    } catch (error) {
+        console.log("Failed to get location", error);
+    }
+}
 
-
-
-
-
-
+run();

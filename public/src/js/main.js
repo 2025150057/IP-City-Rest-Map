@@ -11,6 +11,7 @@ function getLoc() {
         longitude: Number
     }
     throw error if geolocation function failed or user rejected the permission.
+    note that this function takes 5~10 sec. 
     */
     return new Promise((resolve, reject) => {
         if (navigator.geolocation) {
@@ -36,6 +37,7 @@ function getLoc() {
 
 // Example of how to use it synchronously with async/await
 async function run() {
+    // just a test func.
     try {
         const coords = await getLoc();
         console.log("Latitude:", coords.latitude, "Longitude:", coords.longitude);
@@ -45,9 +47,3 @@ async function run() {
 }
 
 run();
-
-
-
-
-
-

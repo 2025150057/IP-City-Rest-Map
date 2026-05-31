@@ -35,10 +35,15 @@ app.post("/gps", (req, res) => {
     let coords = req.body;
     console.log(coords);
 
+
+
     // TODO: server finds a closest seoul location of user's coords
 
 
 
-
+    res.json({
+        latitude: coords.latitude,
+        longitude: coords.longitude
+    });
 });
 

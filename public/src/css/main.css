@@ -5,13 +5,10 @@ body {
     background-color: aquamarine;
 }
 
+/* so whatttttttts  */
 
-@media (width > 1400px){
+@media (width > 800px) {}
 
-}
-@media (1400px > width > 800px){
+@media (800px > width > 360px) {}
 
-}
-@media (width < 801px){
-
-}
+@media (width < 361px) {}

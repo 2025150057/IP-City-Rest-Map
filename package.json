@@ -15,10 +15,16 @@
   "type": "commonjs",
   "main": "public/src/html/index.js",
   "scripts": {
-    "test": "node index.js"
+    "test": "node index.js",
+    "dev": "NODE_ENV=development node --watch --watch-path=./public/src --watch-path=./index.js index.js"
   },
   "dependencies": {
     "express": "^5.2.1",
     "nodemon": "^3.1.14"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "prettier": "^3.8.3",
+    "wrangler": "^4.95.0"
   }
 }

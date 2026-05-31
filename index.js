@@ -1,27 +1,43 @@
 //importing express
 const express = require("express");
-const path = require("path");
+const { static: expressStatic, json } = require("express");
+const { join } = require("path");
 
-
-
+/**
+ * Run a test function only in development environment.
+ * @template T
+ * @param {()=>T} test
+ * @return {T}
+ * @throws {Error} If it's not dev environment.
+ */
+function debug(test) {
+    if (process.env.NODE_ENV === "development") {
+        return test();
+    }
+}
+/**
+ * Make a error!!!!!
+ * @throws {Error} Always throws an error.
+ * @param {string|undefined} message - The error message to throw. If not provided, a default message will be used.
+ */
+function todo(message) {
+    throw new Error(message || "TODO: Implement this function!");
+}
 //initializing express instance.
 const app = express();
 
-app.use(express.static("public/src"));
+app.use(expressStatic("public/src"));
 
 //parse JSON bodies
-app.use(express.json());
-
+app.use(json());
 
 //handle localhost get method.
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "public/src/html/index.html"));
+    res.sendFile(join(__dirname, "public/src/html/index.html"));
 });
 
 //default port = 8000.
 const PORT = process.env.PORT || 8000;
-
-
 
 app.listen(PORT, () => {
     console.log("started! :)");
@@ -45,5 +61,5 @@ app.post("/gps", (req, res) => {
         latitude: coords.latitude,
         longitude: coords.longitude
     });
+    todo("server finds a closest seoul location of user's coords");
 });
-

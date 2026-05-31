@@ -7,7 +7,7 @@ const path = require("path");
 //initializing express instance.
 const app = express();
 
-app.use(express.static("public"));
+app.use(express.static("public/src"));
 
 
 //handle localhost get method.
@@ -24,3 +24,7 @@ app.listen(PORT, () => {
     console.log("started! :)");
     console.log(`address : http://127.0.0.1:${PORT}`);
 });
+
+// TODO : listen user api call and response.
+
+

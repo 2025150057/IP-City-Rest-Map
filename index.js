@@ -51,13 +51,7 @@ app.post("/gps", (req, res) => {
     // when user sends a gps data.
     let coords = req.body;
     console.log(coords);
-
-
-
     // TODO: server finds a closest seoul location of user's coords
-
-
-
     res.json({
         latitude: coords.latitude,
         longitude: coords.longitude

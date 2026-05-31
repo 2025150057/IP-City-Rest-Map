@@ -41,9 +41,21 @@ async function run() {
     try {
         const coords = await getLoc();
         console.log("Latitude:", coords.latitude, "Longitude:", coords.longitude);
+
+        fetch("/gps", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(coords)
+        });
     } catch (error) {
         console.log("Failed to get location", error);
     }
+
+
 }
+
+
 
 run();

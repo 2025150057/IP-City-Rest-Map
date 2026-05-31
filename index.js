@@ -9,6 +9,9 @@ const app = express();
 
 app.use(express.static("public/src"));
 
+//parse JSON bodies
+app.use(express.json());
+
 
 //handle localhost get method.
 app.get("/", (req, res) => {
@@ -27,4 +30,15 @@ app.listen(PORT, () => {
 
 // TODO : listen user api call and response.
 
+app.post("/gps", (req, res) => {
+    // when user sends a gps data.
+    let coords = req.body;
+    console.log(coords);
+
+    // TODO: server finds a closest seoul location of user's coords
+
+
+
+
+});
 

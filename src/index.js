@@ -62,10 +62,7 @@ async function search_loc(loc_name, page_start, page_end) {
 
 	console.log(loc_name);
 	const seoul_api_key = process.env.SEOUL_API_KEY || 'faa7c57e78db4bcf9b215f9b8dc74c9c';
-	if (seoul_api_key === null) {
-		console.error("no env key found!");
-		throw new Error("env key not found!");
-	}
+	// found through looking at log. maybe default api key? 
 
 	const seoul_api_url = "http://openapi.seoul.go.kr:8088/" +
 		seoul_api_key +

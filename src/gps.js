@@ -3,6 +3,6 @@ const router = express.Router();
 
 
 router.get("/closest", (req, res) => {
-
+    //todo
 })
 

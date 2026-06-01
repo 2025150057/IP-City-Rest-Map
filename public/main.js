@@ -36,22 +36,31 @@ function getLoc() {
 // Example of how to use it synchronously with async/await
 async function run() {
     // just a test func.
-    try {
-        const coords = await getLoc();
-        console.log("Latitude:", coords.latitude, "Longitude:", coords.longitude);
+    
+    let loc_name = prompt("write a loc name");
+    if (loc_name !== null)
+    {
+        try {
+            
+            let response = await fetch(`/search-loc?locname=${loc_name}`);
 
-        fetch("/gps", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(coords)
-        }).then(res => res.json())
-            .then(data => console.log(data))
-            .catch(err => console.error(err));
-    } catch (error) {
-        console.log("Failed to get location", error);
+            if (!response.ok)
+            {
+                throw new Error(`http response err! Status:${response.status}`);
+            }
+
+            let data = await response.json();
+            console.log("sucess, ", data);
+            
+        } catch (error) {
+            console.error(`err happend at fetching. ${error}`);
+        }
+        
     }
+
+
+
+
     /** */
 }
 

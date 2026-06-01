@@ -1,0 +1,72 @@
+// 서울시 api 분석 중에 일부 뜯어왔어용 ㅇㅅㅇ;;;
+
+async function() {
+  // 모바일에서 선택했으면 "_m" 이 id로 들어있어 _m 삭제
+  _id = this['id']['replace']('_m', '');
+  // 활성화된 메뉴 선택 -> 비활성화
+  if ($(this)['hasClass']('on')) {
+    $('#' + _id)['removeClass']('on');
+    $('#' + _id + '_m')['removeClass']('on');
+    // 레이어 삭제
+    if (_id == 'bbs') {
+      layerGroup['bus']['clearLayers']();
+      layerGroup['bike']['clearLayers']();
+      layerGroup['subway']['clearLayers']()
+    } else {
+      if (_id == 'heatmap') {
+        $('.leaflet-image-layer')['remove']();
+        $('.legend_population_container')['hide']();
+        checkSwipe()
+      } else {
+        layerGroup[_id]['clearLayers']();
+        if (_id == 'road') {
+          $('#pop_legend')['hide']()
+        }
+      }
+    }
+  } else { // 비활성화된 메뉴 선택 -> 활성화
+    $('#' + _id)['addClass']('on');
+    $('#' + _id + '_m')['addClass']('on');
+    // 핫스팟의 정보들 가져오기
+    var hotspotNm = $('#hotspotNm')['text']();
+    if (_id == 'bbs') {
+      await getBus(hotspotNm, null);
+      await getBike(hotspotNm, null);
+      await getSubway(hotspotNm, null);
+      await getSubwayFacility(hotspotNm);
+    } else {
+      if (_id == 'heatmap') {
+        if (map['getZoom']() > 11) {
+          map['setZoom'](11)
+        };
+        await getHeatmap(hotspotNm);
+        $('.legend_population_container')['show']()
+      } else {
+        if (_id == 'road') {
+          await getRoad(hotspotNm, null);
+          $('#pop_legend')['show']()
+        } else {
+          if (_id == 'parking') {
+            await getParking(hotspotNm, null)
+          } else {
+            if (_id == 'cctv') {
+              await getCctv(hotspotNm, null)
+            } else {
+              if (_id == 'acc') {
+                await getAcc(hotspotNm, null)
+              } else {
+                if (_id == 'EvCharger') {
+                  await getEvCharger(hotspotNm)
+                } else {
+                  if (_id == 'cultural') {
+                    await getCultural(hotspotNm, null)
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

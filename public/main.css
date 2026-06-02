@@ -1,0 +1,14 @@
+/* todos : make a design.*/
+
+body {
+    /* for test*/
+    background-color: aquamarine;
+}
+
+/* so whatttttttts  */
+
+@media (width > 800px) {}
+
+@media (800px > width > 360px) {}
+
+@media (width < 361px) {}

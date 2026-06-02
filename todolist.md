@@ -2,7 +2,7 @@ Followed by a pdf's service scenario.
 
 
 
-# handling a gps data.
+# handling a gps data. (COMPLETED!)
 0. before runtime, get locations of seoul city data api and calc it's gps locs.
 1. user sends a server gps data.
 2. server gets a gps data. 

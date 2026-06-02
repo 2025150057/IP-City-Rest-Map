@@ -36,26 +36,24 @@ function getLoc() {
 // Example of how to use it synchronously with async/await
 async function run() {
     // just a test func.
-    
+
     let loc_name = prompt("write a loc name");
-    if (loc_name !== null)
-    {
+    if (loc_name !== null) {
         try {
-            
+
             let response = await fetch(`/search-loc?locname=${loc_name}`);
 
-            if (!response.ok)
-            {
+            if (!response.ok) {
                 throw new Error(`http response err! Status:${response.status}`);
             }
 
             let data = await response.json();
             console.log("sucess, ", data);
-            
+
         } catch (error) {
             console.error(`err happend at fetching. ${error}`);
         }
-        
+
     }
 
 
@@ -64,6 +62,24 @@ async function run() {
     /** */
 }
 
+async function getClosestPlacesFromUser() {
+    const coords = await getLoc();
+
+    let response = await fetch("/gps", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(coords),
+    });
+
+    const data = await response.json();
+
+    console.log("closest places: ", data);
+    return data;
+}
 
 
-run();
+getClosestPlacesFromUser().catch((err) => { console.error(err) });
+
+//run();

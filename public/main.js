@@ -17,9 +17,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const weights = loadWeights();
   applyWeightsToInputs(weights);
 
-  document
-    .getElementById("recommend-button")
-    .addEventListener("click", handleRecommend);
+  const recommendButton = document.getElementById("recommend-button");
+
+  if (recommendButton) {
+    recommendButton.addEventListener("click", handleRecommend);
+  }
+
+  setStatus("위치 정보를 불러올 준비가 되었습니다.");
 });
 
 async function handleRecommend() {
@@ -39,18 +43,17 @@ async function handleRecommend() {
     }
 
     const data = await requestRecommendation(position, weights, placeType);
+
     currentPlaces = data.places;
 
-/**
- * @abstract this function inputs "places" e.g. cafes, parks, etc...
- *  and returns an sorted array of each places through setted weights.
- *  
- * @param {Array} places - array of places. 
- * @returns {Array} sorted array of places.
- */
-function CalcPriorityThroughWeights(places) {
-    //TODO: make this function.
-    throw new Error("NOT WORKED!");
+    if (!currentPlaces || currentPlaces.length === 0) {
+      setStatus("추천 가능한 장소가 없습니다.");
+      return;
+    }
+
+    renderPlaces(currentPlaces, handlePlaceSelect);
+    renderCongestionChart(currentPlaces[0].congestionTrend);
+    renderPlaceNetwork(currentPlaces, handlePlaceSelect);
 
     setStatus("추천이 완료되었습니다.");
   } catch (error) {
@@ -77,90 +80,66 @@ async function handlePlaceSelect(place) {
     setStatus("장소 선택은 되었지만 가중치 반영에 실패했습니다.");
   }
 }
+
+/**
+ * @abstract this function inputs places and returns a sorted array through weights.
+ *
+ * @param {Array} places - array of places.
+ * @returns {Array} sorted array of places.
+ */
+function CalcPriorityThroughWeights(places) {
+  // TODO: connect real priority calculation later.
+  return places;
 }
 
 /**
- * @abstract get a map, and apply map to html.
- * 
- * @returns none.
+ * @abstract get map data and apply it to html.
+ *
+ * @returns {Promise<null>}
  */
 async function getMap() {
-    //TODO: make this function.
-    throw new Error("NOT WORKED!");
+  // TODO: connect map data from server later.
+  return null;
 }
 
 /**
- * @abstract get a graph.
- * 
+ * @abstract get graph data.
+ *
+ * @returns {Promise<null>}
  */
 async function getGraph() {
-    // TODO: make this function.
-    throw new Error("NOT WORKED!");
+  // TODO: connect graph data from server later.
+  return null;
 }
 
 /**
- * @abstract get a weights data from local storage
- * 
+ * @abstract get weights data from local storage or input elements.
+ *
+ * @returns {Object} weights object.
  */
 function getWeights() {
-    //TODO: make this function.
-    throw new Error("NOT WORKED!");
+  return readWeightsFromInputs();
 }
 
 /**
- * @abstract select places from weight.
- * 
- * @param {Array} places
- * @param {Object} places[i]
- * @param {string} places[i].density - density of place. (currently estimated through local api.)
- * @param {string} places[i].name - name of place.
- * @param {Object} weights
- * @param {
- *  density:number
- *  typeofplace:number
- *  micdust:number
- *  dist:number
- * }
- * 
+ * @abstract select places according to weights.
+ *
+ * @param {Array} places - array of places.
  * @returns {Array} sorted array of places.
- * 
  */
 function selectPlacesFromWeight(places) {
-    //TODO: make this function.
-    throw new Error("NOT WORKED!");
+  // TODO: sort places by weights later.
+  return places;
 }
-
 
 /**
- * 
- * @abstract update weights according to users. 
- * 
- * @param {Array} places
- * @param {Object} places[i]
- * @param {string} places[i].density - density of place. (currently estimated through local api.)
- * @param {string} places[i].name - name of place.
- * 
- * @param {Object} selected
- * @param {
- *   density: number,
- *   typeofplace: number,
- *   micdust: number,
- *   dist: number
- * }
- * 
- * 
+ * @abstract update weights according to user's selected place.
+ *
+ * @param {Array} places - array of places.
+ * @param {Object} selected - selected place.
+ * @returns {null}
  */
 function updateWeightsFromSelection(places, selected) {
-    //TODO: make this function.
-    throw new Error("NOT WORKED!");
+  // TODO: update weights according to selected place later.
+  return null;
 }
-
-
-
-
-
-
-
-getClosestPlacesFromUser().catch((err) => { console.error(err) });
-
-//run();

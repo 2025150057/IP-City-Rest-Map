@@ -20,14 +20,15 @@ export default async function getClosestPlaceName(coords, num) {
     const longitude = coords.longitude;
     const latitude = coords.latitude;
 
-    let closestPlaces = {};
+    let closestPlaces = [];
     places.forEach(place => {
         const distance = Math.sqrt(Math.pow(place.LONGITUDE - longitude, 2) + Math.pow(place.LATITUDE - latitude, 2));
-        closestPlaces[place.KOR_NM] = distance;
+        place.distance = distance;
+        closestPlaces.push(place);
     });
 
-    closestPlaces = Object.fromEntries(Object.entries(closestPlaces).sort(([, a], [, b]) => a - b).slice(0, num));
+    closestPlaces = closestPlaces.sort((a, b) => a.distance - b.distance).slice(0, num);
 
     // return only num numbers.
-    return Object.keys(closestPlaces);
+    return closestPlaces;
 }

@@ -8,7 +8,7 @@ Followed by a pdf's service scenario.
 2. server gets a gps data. 
 3. server finds a closest location of 0.
 
-# handling a seoul api.
+# handling a seoul api. (COMPLETED...?)
 1. server sends a request to seoul api.
 2. api sends a response(density datas, mirco dust datas) to server.
 3. server parses the response and sends it to the front-end.

@@ -56,10 +56,6 @@ async function run() {
 
     }
 
-
-
-
-    /** */
 }
 
 async function getClosestPlacesFromUser() {
@@ -75,9 +71,50 @@ async function getClosestPlacesFromUser() {
 
     const data = await response.json();
 
-    console.log("closest places: ", data);
+    logAtParagraph(JSON.stringify(data, null, 2));
+
     return data;
 }
+
+function logAtParagraph(msg) {
+    document.getElementById("dev").innerText += msg;
+}
+
+
+/**
+ * @abstract this function inputs "places" e.g. cafes, parks, etc...
+ *  and returns an sorted array of each places through setted weights.
+ *  
+ * @param {Array} places - array of places. 
+ * @returns {Array} sorted array of places.
+ */
+function CalcPriorityThroughWeights(places) {
+    throw new Error("NOT WORKED!");
+
+}
+
+
+async function main() {
+    getClosestPlacesFromUser().catch((err) => { console.error(err) });
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 getClosestPlacesFromUser().catch((err) => { console.error(err) });

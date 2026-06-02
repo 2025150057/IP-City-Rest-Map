@@ -89,6 +89,7 @@ function logAtParagraph(msg) {
  * @returns {Array} sorted array of places.
  */
 function CalcPriorityThroughWeights(places) {
+    //TODO: make this function.
     throw new Error("NOT WORKED!");
 
 }
@@ -100,16 +101,81 @@ async function main() {
 
 }
 
+/**
+ * @abstract get a map, and apply map to html.
+ * 
+ * @returns none.
+ */
+async function getMap() {
+    //TODO: make this function.
+    throw new Error("NOT WORKED!");
+}
+
+/**
+ * @abstract get a graph.
+ * 
+ */
+async function getGraph() {
+    // TODO: make this function.
+    throw new Error("NOT WORKED!");
+}
+
+/**
+ * @abstract get a weights data from local storage
+ * 
+ */
+function getWeights() {
+    //TODO: make this function.
+    throw new Error("NOT WORKED!");
+}
+
+/**
+ * @abstract select places from weight.
+ * 
+ * @param {Array} places
+ * @param {Object} places[i]
+ * @param {string} places[i].density - density of place. (currently estimated through local api.)
+ * @param {string} places[i].name - name of place.
+ * @param {Object} weights
+ * @param {
+ *  density:number
+ *  typeofplace:number
+ *  micdust:number
+ *  dist:number
+ * }
+ * 
+ * @returns {Array} sorted array of places.
+ * 
+ */
+function selectPlacesFromWeight(places) {
+    //TODO: make this function.
+    throw new Error("NOT WORKED!");
+}
 
 
-
-
-
-
-
-
-
-
+/**
+ * 
+ * @abstract update weights according to users. 
+ * 
+ * @param {Array} places
+ * @param {Object} places[i]
+ * @param {string} places[i].density - density of place. (currently estimated through local api.)
+ * @param {string} places[i].name - name of place.
+ * 
+ * @param {Object} selected
+ * @param {
+ *   density: number,
+ *   typeofplace: number,
+ *   micdust: number,
+ *   dist: number
+ * }
+ * 
+ * 
+ */
+function updateWeightsFromSelection(places, selected) {
+    //TODO: make this function.
+    throw new Error("NOT WORKED!");
+}
 
 
 

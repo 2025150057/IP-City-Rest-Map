@@ -1,85 +1,45 @@
-// TODO: send GPS data. 
+import {
+  loadWeights,
+  saveWeights,
+  readWeightsFromInputs,
+  applyWeightsToInputs
+} from "./js/storage.js";
 
-console.log("worked");
+import { getCurrentLocation } from "./js/location.js";
+import { requestRecommendation, sendFeedback } from "./js/api.js";
+import { setStatus, renderPlaces } from "./js/render.js";
+import { renderCongestionChart } from "./js/chart.js";
+import { renderPlaceNetwork } from "./js/network.js";
 
-/** GET USER's current location by geolocation api.
- *  @constructor
- *  INPUT: NONE
- *  @returns {Number, Number}
- *  throw error if geolocation function failed or user rejected the permission.
- *  note that this function takes 5~10 sec. 
-    */
-function getLoc() {
+let currentPlaces = [];
 
-    return new Promise((resolve, reject) => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    console.log("success at getLOC");
-                    // Return an object containing both coordinates
-                    resolve({
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude
-                    });
-                },
-                (error) => {
-                    console.error("ERR at getLOC!", error);
-                    reject(error);
-                }
-            );
-        } else {
-            reject(new Error("Geolocation is not supported by this browser, or user rejected the permission"));
-        }
-    });
-}
+document.addEventListener("DOMContentLoaded", () => {
+  const weights = loadWeights();
+  applyWeightsToInputs(weights);
 
-// Example of how to use it synchronously with async/await
-async function run() {
-    // just a test func.
+  document
+    .getElementById("recommend-button")
+    .addEventListener("click", handleRecommend);
+});
 
-    let loc_name = prompt("write a loc name");
-    if (loc_name !== null) {
-        try {
+async function handleRecommend() {
+  try {
+    setStatus("현재 위치를 확인하는 중입니다.");
 
-            let response = await fetch(`/search-loc?locname=${loc_name}`);
+    const position = await getCurrentLocation();
+    const weights = readWeightsFromInputs();
+    const placeType = document.getElementById("place-type").value;
 
-            if (!response.ok) {
-                throw new Error(`http response err! Status:${response.status}`);
-            }
+    saveWeights(weights);
 
-            let data = await response.json();
-            console.log("sucess, ", data);
-
-        } catch (error) {
-            console.error(`err happend at fetching. ${error}`);
-        }
-
+    if (position.fallback) {
+      setStatus("위치 권한을 사용할 수 없어 동대문역사문화공원역 기준으로 추천합니다.");
+    } else {
+      setStatus("서버에서 추천 장소를 계산하는 중입니다.");
     }
 
-}
-
-async function getClosestPlacesFromUser() {
-    const coords = await getLoc();
-
-    let response = await fetch("/gps", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(coords),
-    });
-
-    const data = await response.json();
-
-    logAtParagraph(JSON.stringify(data, null, 2));
-
-    return data;
-}
-
-function logAtParagraph(msg) {
-    document.getElementById("dev").innerText += msg;
-}
-
+    const data = await requestRecommendation(position, weights, placeType);
+    currentPlaces = data.places;
 
 /**
  * @abstract this function inputs "places" e.g. cafes, parks, etc...
@@ -92,13 +52,31 @@ function CalcPriorityThroughWeights(places) {
     //TODO: make this function.
     throw new Error("NOT WORKED!");
 
+    setStatus("추천이 완료되었습니다.");
+  } catch (error) {
+    console.error(error);
+    setStatus("추천 정보를 불러오지 못했습니다.");
+  }
 }
 
+async function handlePlaceSelect(place) {
+  renderCongestionChart(place.congestionTrend);
 
-async function main() {
-    getClosestPlacesFromUser().catch((err) => { console.error(err) });
+  try {
+    const weights = readWeightsFromInputs();
+    const result = await sendFeedback(place.id, weights);
 
+    if (result.weights) {
+      saveWeights(result.weights);
+      applyWeightsToInputs(result.weights);
+    }
 
+    setStatus(`${place.name} 선택이 반영되었습니다.`);
+  } catch (error) {
+    console.error(error);
+    setStatus("장소 선택은 되었지만 가중치 반영에 실패했습니다.");
+  }
+}
 }
 
 /**

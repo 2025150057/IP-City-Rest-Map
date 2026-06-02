@@ -1,40 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>City Rest Map</title>
-  <link rel="stylesheet" href="main.css">
-  <script src="main.js"></script>
-
-  <!-- the title is only for temporary.  -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>실시간 도심 쉼표 지도</title>
+  <link rel="stylesheet" href="./main.css" />
+  <script type="module" src="./main.js"></script>
 </head>
-<header>
-  <div class="header">
-    <p id="logo">some cool team name</p>
-  </div>
-</header>
 
 <body>
-  <div class="map">
-    <!-- TODO: insert map here-->
-    map
-  </div>
+  <header class="app-header">
+    <h1>실시간 도심 쉼표 지도</h1>
+    <p>내 주변의 한적하고 쾌적한 쉼표 스팟을 추천합니다.</p>
+  </header>
 
-  <div class="order-graph">
-    <!-- order of places. -->
-    graphs
-  </div>
+  <main class="app-container">
+    <section class="control-panel">
+      <h2>추천 조건</h2>
 
-  <div class="node-details">
-    some detailed explanation of nodes.
-  </div>
+      <div id="status-message">위치 정보를 불러올 준비가 되었습니다.</div>
 
-  <div class="dev">
-    <p id="dev"> some datas cuz i am lazy to see console's logs.</p>
-  </div>
+      <div class="weight-panel">
+        <label>
+          거리
+          <input id="weight-distance" type="range" min="0" max="1" step="0.1" />
+        </label>
 
+        <label>
+          혼잡도
+          <input id="weight-crowd" type="range" min="0" max="1" step="0.1" />
+        </label>
+
+        <label>
+          대기질
+          <input id="weight-air" type="range" min="0" max="1" step="0.1" />
+        </label>
+
+        <label>
+          장소 유형
+          <input id="weight-type" type="range" min="0" max="1" step="0.1" />
+        </label>
+      </div>
+
+      <select id="place-type">
+        <option value="all">전체</option>
+        <option value="cafe">카페</option>
+        <option value="park">공원</option>
+        <option value="walk">산책로</option>
+      </select>
+
+      <button id="recommend-button">내 주변 쉼표 찾기</button>
+    </section>
+
+    <section class="result-panel">
+      <h2>추천 장소</h2>
+      <div id="place-list"></div>
+    </section>
+
+    <section class="visual-panel">
+      <div class="chart-box">
+        <h2>시간대별 혼잡도</h2>
+        <svg id="congestion-chart"></svg>
+      </div>
+
+      <div class="network-box">
+        <h2>주변 대안 장소 네트워크</h2>
+        <div id="sigma-container"></div>
+      </div>
+    </section>
+  </main>
 </body>
-
 </html>

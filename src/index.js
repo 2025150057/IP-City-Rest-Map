@@ -1,5 +1,8 @@
 import express, { raw } from "express";
 import { httpServerHandler } from "cloudflare:node";
+import getClosestPlaceName from "./gps";
+
+
 
 /**
  * Run a test function only in development environment.
@@ -35,19 +38,19 @@ app.get("/", (req, res) => {
 
 
 // GPS data processing endpoint
-app.post("/gps", (req, res) => {
+app.post("/gps", async (req, res) => {
 	// when user sends gps data
 	let coords = req.body;
 	console.log("GPS Coordinates received:", coords);
 
-	// Server responds back with the coords
-	res.json({
-		latitude: coords.latitude,
-		longitude: coords.longitude
-	});
 
-	// TODO: server finds a closest seoul location of user's coords
-	todo("server finds a closest seoul location of user's coords");
+	const num = 3;
+	const closestPlaces = await getClosestPlaceName(coords, num);
+
+	console.log(closestPlaces);
+
+	res.json({ closestPlaces });
+
 });
 
 // request seoulapi for test.
@@ -61,8 +64,14 @@ app.get("/search-loc", (req, res) => {
 async function search_loc(loc_name, page_start, page_end) {
 
 	console.log(loc_name);
-	const seoul_api_key = process.env.SEOUL_API_KEY || 'faa7c57e78db4bcf9b215f9b8dc74c9c';
-	// found through looking at log. maybe default api key? 
+	const seoul_api_key = process.env.SEOUL_API_KEY || null;
+
+	if (seoul_api_key === null) {
+		console.error("api key not found!");
+		throw Error("api key not found! seoul_api_key is null!");
+	}
+
+
 
 	const seoul_api_url = "http://openapi.seoul.go.kr:8088/" +
 		seoul_api_key +

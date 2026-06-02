@@ -1,7 +1,7 @@
 import express, { raw } from "express";
 import { httpServerHandler } from "cloudflare:node";
 import getClosestPlaceName from "./gps";
-
+import getDensity, { search_loc } from "./seoulapi";
 
 
 /**
@@ -47,9 +47,15 @@ app.post("/gps", async (req, res) => {
 	const num = 3;
 	const closestPlaces = await getClosestPlaceName(coords, num);
 
-	console.log(closestPlaces);
+	//console.log(closestPlaces);
 
-	res.json({ closestPlaces });
+	const density_array = await getDensity(closestPlaces);
+
+	//console.log(density_array);
+
+	res.json({ density_array });
+
+
 
 });
 
@@ -61,38 +67,8 @@ app.get("/search-loc", (req, res) => {
 	).then((ret) => { res.json(ret) }, (err) => { console.error(err) });
 });
 
-async function search_loc(loc_name, page_start, page_end) {
-
-	console.log(loc_name);
-	const seoul_api_key = process.env.SEOUL_API_KEY || null;
-
-	if (seoul_api_key === null) {
-		console.error("api key not found!");
-		throw Error("api key not found! seoul_api_key is null!");
-	}
 
 
-
-	const seoul_api_url = "http://openapi.seoul.go.kr:8088/" +
-		seoul_api_key +
-		"/json" +
-		"/citydata_ppltn" +
-		"/" + String(page_start) +
-		"/" + String(page_end) +
-		"/" + loc_name;
-
-	try {
-		const data = await fetch(seoul_api_url);
-		const JSONdata = await data.json();
-		console.log("success, ", JSON.stringify(JSONdata, null, 2));
-
-		return JSONdata;
-
-	} catch (err) {
-		console.error(err);
-	}
-
-}
 
 
 

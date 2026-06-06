@@ -89,7 +89,11 @@ app.post("/api/recommend", async (req, res) => {
 	res.json({ places: data });
 });
 
+app.post("/api/feedback", async (req, res) => {
+	const data = await feedback(req.body);
 
+	res.json({ weights: data });
+});
 
 
 

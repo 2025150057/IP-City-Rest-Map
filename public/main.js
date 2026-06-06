@@ -72,7 +72,7 @@ async function handlePlaceSelect(place) {
 
   try {
     const weights = readWeightsFromInputs();
-    const result = await sendFeedback(place.id, weights);
+    const result = await sendFeedback(place, weights);
 
     if (result.weights) {
       saveWeights(result.weights);

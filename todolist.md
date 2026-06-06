@@ -13,7 +13,7 @@ Followed by a pdf's service scenario.
 2. api sends a response(density datas, mirco dust datas) to server.
 3. server parses the response and sends it to the front-end.
 
-# handling a kakao api.
+# handling a kakao api. (COMPLETED!)
 1. server sends a request to kakao api.
 2. api sends a place datas to server.
 

@@ -132,7 +132,7 @@ function generateCongestionTrend(congestionTrend) {
 
         // Parse time part directly from string "YYYY-MM-DD HH:MM"
         let timeString = item.FCST_TIME.split(" ")[1] || "00:00";
-        
+
         // Map Korean congestion levels to numeric percentages (0-100) for line chart
         const lvl = item.FCST_CONGESST_LVL || item.FCST_CONGEST_LVL;
         let numericValue = 50;

@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>실시간 도심 쉼표 지도</title>
   <link rel="stylesheet" href="./main.css" />
   <script type="module" src="./main.js"></script>
-  <link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-  ></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
 <body>
@@ -44,8 +40,16 @@
         </label>
 
         <label>
-          장소 유형
-          <input id="weight-type" type="range" min="0" max="1" step="0.1" />
+          카페 선호도
+          <input id="weight-cafe" type="range" min="0" max="1" step="0.1" />
+        </label>
+        <label>
+          공원 선호도
+          <input id="weight-park" type="range" min="0" max="1" step="0.1" />
+        </label>
+        <label>
+          산책로 선호도
+          <input id="weight-walk" type="range" min="0" max="1" step="0.1" />
         </label>
       </div>
 
@@ -82,4 +86,5 @@
     </section>
   </main>
 </body>
+
 </html>

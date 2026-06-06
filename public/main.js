@@ -1,69 +1,213 @@
-// TODO: send GPS data. 
+import {
+  loadWeights,
+  saveWeights,
+  readWeightsFromInputs,
+  applyWeightsToInputs
+} from "./js/storage.js";
 
-console.log("worked");
+import { getCurrentLocation } from "./js/location.js";
+import { requestRecommendation, sendFeedback } from "./js/api.js";
+import { setStatus, renderPlaces } from "./js/render.js";
+import { renderCongestionChart } from "./js/chart.js";
+import { renderPlaceNetwork } from "./js/network.js";
 
-/** GET USER's current location by geolocation api.
- *  @constructor
- *  INPUT: NONE
- *  @returns {Number, Number}
- *  throw error if geolocation function failed or user rejected the permission.
- *  note that this function takes 5~10 sec. 
-    */
-function getLoc() {
+let currentPlaces = [];
+let map = null;
+let userMarker = null;
+let placeMarkers = [];
+let lastMapPosition = null;
 
-    return new Promise((resolve, reject) => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    console.log("success at getLOC");
-                    // Return an object containing both coordinates
-                    resolve({
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude
-                    });
-                },
-                (error) => {
-                    console.error("ERR at getLOC!", error);
-                    reject(error);
-                }
-            );
-        } else {
-            reject(new Error("Geolocation is not supported by this browser, or user rejected the permission"));
-        }
-    });
-}
+document.addEventListener("DOMContentLoaded", () => {
+  const weights = loadWeights();
+  applyWeightsToInputs(weights);
 
-// Example of how to use it synchronously with async/await
-async function run() {
-    // just a test func.
-    
-    let loc_name = prompt("write a loc name");
-    if (loc_name !== null)
-    {
-        try {
-            
-            let response = await fetch(`/search-loc?locname=${loc_name}`);
+  const recommendButton = document.getElementById("recommend-button");
 
-            if (!response.ok)
-            {
-                throw new Error(`http response err! Status:${response.status}`);
-            }
+  if (recommendButton) {
+    recommendButton.addEventListener("click", handleRecommend);
+  }
 
-            let data = await response.json();
-            console.log("sucess, ", data);
-            
-        } catch (error) {
-            console.error(`err happend at fetching. ${error}`);
-        }
-        
+  setStatus("위치 정보를 불러올 준비가 되었습니다.");
+});
+
+async function handleRecommend() {
+  try {
+    setStatus("현재 위치를 확인하는 중입니다.");
+
+    const position = await getMap();
+    const weights = readWeightsFromInputs();
+    const placeType = document.getElementById("place-type").value;
+
+    saveWeights(weights);
+
+    if (position.fallback) {
+      setStatus("위치 권한을 사용할 수 없어 동대문역사문화공원역 기준으로 추천합니다.");
+    } else {
+      setStatus("서버에서 추천 장소를 계산하는 중입니다.");
     }
 
+    const data = await requestRecommendation(position, weights, placeType);
 
+    currentPlaces = data.places;
 
+    if (!currentPlaces || currentPlaces.length === 0) {
+      setStatus("추천 가능한 장소가 없습니다.");
+      return;
+    }
 
-    /** */
+    renderPlaces(currentPlaces, handlePlaceSelect);
+    renderCongestionChart(currentPlaces[0].congestionTrend);
+    renderPlaceNetwork(currentPlaces, handlePlaceSelect);
+    renderPlaceMarkers(currentPlaces);
+
+    setStatus("추천이 완료되었습니다.");
+  } catch (error) {
+    console.error(error);
+    setStatus("추천 정보를 불러오지 못했습니다.");
+  }
 }
 
+async function handlePlaceSelect(place) {
+  renderCongestionChart(place.congestionTrend);
 
+  try {
+    const weights = readWeightsFromInputs();
+    const result = await sendFeedback(place.id, weights);
 
-run();
+    if (result.weights) {
+      saveWeights(result.weights);
+      applyWeightsToInputs(result.weights);
+    }
+
+    setStatus(`${place.name} 선택이 반영되었습니다.`);
+  } catch (error) {
+    console.error(error);
+    setStatus("장소 선택은 되었지만 가중치 반영에 실패했습니다.");
+  }
+}
+
+/**
+ * @abstract this function inputs places and returns a sorted array through weights.
+ *
+ * @param {Array} places - array of places.
+ * @returns {Array} sorted array of places.
+ */
+function CalcPriorityThroughWeights(places) {
+  // TODO: connect real priority calculation later.
+  return places;
+}
+
+async function getMap() {
+  const position = await getCurrentLocation();
+
+  const mapData = {
+    latitude: position.latitude,
+    longitude: position.longitude,
+    fallback: position.fallback,
+  };
+
+  console.log("Current map position:", mapData);
+
+  const mapElement = document.getElementById("map");
+
+  if (!mapElement || typeof L === "undefined") {
+    return mapData;
+  }
+
+  if (!map) {
+    map = L.map("map").setView([mapData.latitude, mapData.longitude], 15);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: "&copy; OpenStreetMap contributors",
+    }).addTo(map);
+  } else {
+    map.setView([mapData.latitude, mapData.longitude], 15);
+  }
+
+  if (userMarker) {
+    userMarker.setLatLng([mapData.latitude, mapData.longitude]);
+  } else {
+    userMarker = L.marker([mapData.latitude, mapData.longitude])
+      .addTo(map)
+      .bindPopup("현재 위치");
+  }
+
+  userMarker.openPopup();
+
+  lastMapPosition = mapData;
+
+  return mapData;
+}
+
+function renderPlaceMarkers(places) {
+  if (!map || typeof L === "undefined") {
+    return;
+  }
+
+  placeMarkers.forEach((marker) => marker.remove());
+  placeMarkers = [];
+
+  places.forEach((place, index) => {
+    const latitude = Number(place.latitude ?? place.LATITUDE ?? place.lat);
+    const longitude = Number(place.longitude ?? place.LONGITUDE ?? place.lng);
+
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+      console.warn(`좌표가 없어 마커를 표시하지 않음: ${place.name ?? place.KOR_NM}`);
+      return;
+    }
+
+    const marker = L.marker([latitude, longitude])
+      .addTo(map)
+      .bindPopup(`
+        <strong>${index + 1}위. ${place.name ?? place.KOR_NM}</strong><br />
+        유형: ${place.category ?? place.CATEGORY ?? "정보 없음"}<br />
+        혼잡도: ${place.crowdLevel ?? place.density ?? "정보 없음"}<br />
+        쉼표 지수: ${place.restScore ?? "계산 전"}
+      `);
+
+    placeMarkers.push(marker);
+  });
+}
+
+/**
+ * @abstract get graph data.
+ *
+ * @returns {Promise<null>}
+ */
+async function getGraph() {
+  // TODO: connect graph data from server later.
+  return null;
+}
+
+/**
+ * @abstract get weights data from local storage or input elements.
+ *
+ * @returns {Object} weights object.
+ */
+function getWeights() {
+  return readWeightsFromInputs();
+}
+
+/**
+ * @abstract select places according to weights.
+ *
+ * @param {Array} places - array of places.
+ * @returns {Array} sorted array of places.
+ */
+function selectPlacesFromWeight(places) {
+  // TODO: sort places by weights later.
+  return places;
+}
+
+/**
+ * @abstract update weights according to user's selected place.
+ *
+ * @param {Array} places - array of places.
+ * @param {Object} selected - selected place.
+ * @returns {null}
+ */
+function updateWeightsFromSelection(places, selected) {
+  // TODO: update weights according to selected place later.
+  return null;
+}

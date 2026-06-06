@@ -1,6 +1,9 @@
 import express, { raw } from "express";
 import { httpServerHandler } from "cloudflare:node";
 import { searchNearbyRestAreas } from "./map.js";
+import getClosestPlaceName from "./gps";
+import getDensity, { search_loc } from "./seoulapi";
+
 
 /**
  * Run a test function only in development environment.
@@ -36,19 +39,25 @@ app.get("/", (req, res) => {
 
 
 // GPS data processing endpoint
-app.post("/gps", (req, res) => {
+app.post("/gps", async (req, res) => {
 	// when user sends gps data
 	let coords = req.body;
 	console.log("GPS Coordinates received:", coords);
 
-	// Server responds back with the coords
-	res.json({
-		latitude: coords.latitude,
-		longitude: coords.longitude
-	});
 
-	// TODO: server finds a closest seoul location of user's coords
-	todo("server finds a closest seoul location of user's coords");
+	const num = 3;
+	const closestPlaces = await getClosestPlaceName(coords, num);
+
+	//console.log(closestPlaces);
+
+	const density_array = await getDensity(closestPlaces);
+
+	//console.log(density_array);
+
+	res.json({ density_array });
+
+
+
 });
 
 // get nearby rest areas (raw results) — scoring is handled elsewhere
@@ -76,35 +85,8 @@ app.get("/search-loc", (req, res) => {
 	).then((ret) => { res.json(ret) }, (err) => { console.error(err) });
 });
 
-async function search_loc(loc_name, page_start, page_end) {
 
-	console.log(loc_name);
-	const seoul_api_key = process.env.SEOUL_API_KEY || 'faa7c57e78db4bcf9b215f9b8dc74c9c';
-	if (seoul_api_key === null) {
-		console.error("no env key found!");
-		throw new Error("env key not found!");
-	}
 
-	const seoul_api_url = "http://openapi.seoul.go.kr:8088/" +
-		seoul_api_key +
-		"/json" +
-		"/citydata_ppltn" +
-		"/" + String(page_start) +
-		"/" + String(page_end) +
-		"/" + loc_name;
-
-	try {
-		const data = await fetch(seoul_api_url);
-		const JSONdata = await data.json();
-		console.log("success, ", JSON.stringify(JSONdata, null, 2));
-
-		return JSONdata;
-
-	} catch (err) {
-		console.error(err);
-	}
-
-}
 
 
 

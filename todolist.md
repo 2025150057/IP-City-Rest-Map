@@ -2,13 +2,13 @@ Followed by a pdf's service scenario.
 
 
 
-# handling a gps data.
+# handling a gps data. (COMPLETED!)
 0. before runtime, get locations of seoul city data api and calc it's gps locs.
 1. user sends a server gps data.
 2. server gets a gps data. 
 3. server finds a closest location of 0.
 
-# handling a seoul api.
+# handling a seoul api. (COMPLETED...?)
 1. server sends a request to seoul api.
 2. api sends a response(density datas, mirco dust datas) to server.
 3. server parses the response and sends it to the front-end.

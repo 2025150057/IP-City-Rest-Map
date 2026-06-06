@@ -1,9 +1,9 @@
 import express, { raw } from "express";
 import { httpServerHandler } from "cloudflare:node";
-import { searchNearbyRestAreas } from "./map.js";
-import getClosestPlaceName from "./gps";
-import getDensity, { search_loc } from "./seoulapi";
-
+import { searchNearbyRestAreas } from "./api/map.js";
+import getClosestPlaceName from "./api/gps.js";
+import getDensity, { search_loc } from "./api/seoulapi.js";
+import requestRecomendPlaces from "./api/recommend.js";
 
 /**
  * Run a test function only in development environment.
@@ -55,9 +55,6 @@ app.post("/gps", async (req, res) => {
 	//console.log(density_array);
 
 	res.json({ density_array });
-
-
-
 });
 
 // get nearby rest areas (raw results) — scoring is handled elsewhere
@@ -85,7 +82,12 @@ app.get("/search-loc", (req, res) => {
 	).then((ret) => { res.json(ret) }, (err) => { console.error(err) });
 });
 
+app.post("/api/recommend", async (req, res) => {
+	console.log("recommending!");
+	const data = await requestRecomendPlaces(req.body);
 
+	res.json({ places: data });
+});
 
 
 

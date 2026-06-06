@@ -50,7 +50,7 @@ export default async function getDensity(datas) {
  * @returns {Object} JSON data from seoul api.
  * @throws {Error} If api key not found or fetch failed.
  */
-export async function search_loc(loc_name, page_start, page_end) {
+export async function search_loc(loc_name, page_start = 1, page_end = 1) {
 
     //console.log(loc_name);
     const seoul_api_key = process.env.SEOUL_API_KEY || null;

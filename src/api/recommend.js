@@ -132,7 +132,7 @@ function generateCongestionTrend(congestionTrend) {
 
         // Parse time part directly from string "YYYY-MM-DD HH:MM"
         let timeString = item.FCST_TIME.split(" ")[1] || "00:00";
-        
+
         // Map Korean congestion levels to numeric percentages (0-100) for line chart
         const lvl = item.FCST_CONGESST_LVL || item.FCST_CONGEST_LVL;
         let numericValue = 50;
@@ -165,7 +165,7 @@ export default async function requestRecomendPlaces(user_data, place_types) {
 
     const closest_place_including_density_data = await getDensity(closest_place_names);
 
-    console.log(closest_place_including_density_data);
+    //console.log(closest_place_including_density_data);
 
     await Promise.all(closest_place_including_density_data.map(async (place) => {
         for (let place_type of types) {
@@ -228,7 +228,7 @@ export default async function requestRecomendPlaces(user_data, place_types) {
     // Sort recommended places by restScore descending
     recommended_places.sort((a, b) => b.restScore - a.restScore);
 
-    console.log(recommended_places);
-    console.log(recommended_places.length);
+    //console.log(recommended_places);
+    //console.log(recommended_places.length);
     return recommended_places;
 }

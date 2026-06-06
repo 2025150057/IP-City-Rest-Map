@@ -12,7 +12,9 @@ export async function requestRecommendation(position, weights, placeType) {
     body: JSON.stringify({
       position,
       weights,
-      placeType: getPlaceType(placeType)
+      placeType: getPlaceType(placeType),
+      count: Infinity,
+      page: 1
     })
   });
 
@@ -23,7 +25,7 @@ export async function requestRecommendation(position, weights, placeType) {
   return response.json();
 }
 
-export async function sendFeedback(selectedPlaceId, weights) {
+export async function sendFeedback(selectedPlace, weights) {
   if (USE_MOCK) {
     return { weights };
   }
@@ -34,7 +36,7 @@ export async function sendFeedback(selectedPlaceId, weights) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      selectedPlaceId,
+      selectedPlace,
       weights
     })
   });

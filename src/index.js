@@ -83,13 +83,17 @@ app.get("/search-loc", (req, res) => {
 });
 
 app.post("/api/recommend", async (req, res) => {
-	console.log("recommending!");
+	//console.log("recommending!");
 	const data = await requestRecomendPlaces(req.body);
 
 	res.json({ places: data });
 });
 
+app.post("/api/feedback", async (req, res) => {
+	const data = await feedback(req.body);
 
+	res.json({ weights: data });
+});
 
 
 

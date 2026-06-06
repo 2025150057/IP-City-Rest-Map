@@ -228,7 +228,6 @@ export default async function requestRecomendPlaces(user_data, place_types) {
     // Sort recommended places by restScore descending
     recommended_places.sort((a, b) => b.restScore - a.restScore);
 
-    //console.log(recommended_places);
-    //console.log(recommended_places.length);
-    return recommended_places;
+    const result = requested_places.slice((user_data.page - 1) * user_data.count, user_data.page * user_data.count);
+    return result;
 }

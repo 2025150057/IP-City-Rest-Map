@@ -1,5 +1,6 @@
 import express, { raw } from "express";
 import { httpServerHandler } from "cloudflare:node";
+import { searchNearbyRestAreas } from "./map.js";
 import getClosestPlaceName from "./gps";
 import getDensity, { search_loc } from "./seoulapi";
 
@@ -57,6 +58,23 @@ app.post("/gps", async (req, res) => {
 
 
 
+});
+
+// get nearby rest areas (raw results) — scoring is handled elsewhere
+app.post("/rest-area-ranking", async (req, res) => {
+	const { longitude, latitude, radius = 1200, size = 25 } = req.body;
+
+	if (longitude == null || latitude == null) {
+		return res.status(400).json({ error: "longitude and latitude are required" });
+	}
+
+	try {
+		const places = await searchNearbyRestAreas(longitude, latitude, radius, size);
+		return res.json({ places });
+	} catch (err) {
+		console.error("Failed to fetch rest areas:", err);
+		return res.status(500).json({ error: err.message });
+	}
 });
 
 // request seoulapi for test.

@@ -1,19 +1,5 @@
 # 실시간 도심 쉼표 지도 (IP-City-Rest-Map) — 보고서 초안
 
-> 주의: 표지의 학번/이름(팀원 전체)과 제출일은 아래 자리표시자([팀원1], [학번])을 실제 정보로 교체해주세요.
-
----
-
-## 표지
-- 과목: Internet Programming (또는 수업명)
-- 프로젝트명: 실시간 도심 쉼표 지도 (IP-City-Rest-Map)
-- 팀명: [팀명]
-- 팀원(학번/이름):
-  - [학번] / [이름] (팀장)
-  - [학번] / [이름]
-  - [학번] / [이름]
-- 제출일: [YYYY-MM-DD]
-
 ---
 
 ## 1. 요약 (Abstract)
@@ -38,7 +24,7 @@
 - wrangler (Cloudflare 배포에 사용)
 
 ### 배포
-- 현재 데모 배포 URL: https://ip-city-rest-map-revive.dhs2025.workers.dev/ (README 참조)
+- 현재 데모 배포 URL: https://ip-city-rest-map-revive.dhs2025.workers.dev/
 
 ### 아키텍처 흐름
 1. 클라이언트가 Geolocation API로 위치를 획득하고 서버에 요청
@@ -119,8 +105,6 @@ async function getLocData(loc_name) {
 }
 ```
 
-(원본 파일 전체는 repo의 beforeruntime.js를 참조)
-
 ---
 
 ## 5. 엔드포인트 및 API 설계(예시)
@@ -156,7 +140,7 @@ async function getLocData(loc_name) {
 - 전처리: beforeruntime.js, beforeruntime2.js로 Excel → output.json 생성 로직 존재
 - 카카오 API 호출을 위한 테스트 코드: test.js
 - 프론트엔드(시각화) 관련 파일은 public/ 또는 src/에 위치(현재 repo에 디렉토리 존재, 세부 구현은 src/ 확인 필요)
-- 실제 시연 스크린샷은 저장소에 포함되어 있지 않으므로 보고서 초안에는 '실행 결과 스크린샷 자리표시'를 포함하였습니다. 가능하시면 직접 캡처한 화면을 보내주세요. 제가 받아서 최종 보고서에 삽입하겠습니다.
+- 실제 시연 스크린샷은 '실행 결과 스크린샷 자리표시'로 포함하였습니다.
 
 ---
 
@@ -167,8 +151,6 @@ async function getLocData(loc_name) {
 - package.json: wrangler 배포, express 의존성, dotenv 등
 - datas/: 전처리용 Excel/JSON 파일 저장소 (output.json 등)
 - public/, src/: 프론트엔드 정적 파일 및 소스 (시각화 구현 위치)
-
-(보고서에는 각 파일의 역할과 핵심 코드 스니펫을 포함 — 전체 소스는 포함하지 않음)
 
 ---
 
@@ -196,24 +178,3 @@ async function getLocData(loc_name) {
 - 서울시 실시간 데이터: https://data.seoul.go.kr/SeoulRtd/list
 - 카카오 로컬 API: https://developers.kakao.com/docs/ko/local/common
 - Geolocation API: https://www.w3schools.com/Html/html5_geolocation.asp
-
----
-
-## 부록: 보고서 제출 체크리스트
-- [ ] PDF/DOCX (A4, ≤7페이지) — 학번/이름(팀원 전원) 포함
-- [ ] 제안서 대비 변경점 요약
-- [ ] 아키텍처·API·데이터 소개 (엔드포인트/샘플 응답 포함)
-- [ ] 핵심 알고리즘(주요 소스코드·수식) 포함
-- [ ] 시나리오별 실행 결과(스크린샷) 포함
-- [ ] 팀원별 역할 및 변경 사유
-- [ ] 발표 영상 MP4(≤6분, DEMO 포함)
-
-
----
-
-(이 파일은 보고서 초안 Markdown 버전입니다. DOCX로 변환을 원하시면 아래 명령으로 변환하거나 요청 주시면 제가 report.docx로 변환해 드리겠습니다.)
-
-# 변환 예시 (사용자 환경에서)
-- pandoc을 사용:
-  - pandoc REPORT.md -o REPORT.docx
-- 마이크로소프트 워드에서 Markdown 불러와서 저장: Word에서 열기 → .md 파일 선택 → 저장을 docx로 변경

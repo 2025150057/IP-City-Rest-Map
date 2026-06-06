@@ -6,6 +6,13 @@
   <title>실시간 도심 쉼표 지도</title>
   <link rel="stylesheet" href="./main.css" />
   <script type="module" src="./main.js"></script>
+  <link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  ></script>
 </head>
 
 <body>
@@ -58,6 +65,11 @@
     </section>
 
     <section class="visual-panel">
+      <div class="map-box">
+        <h2>현재 위치 지도</h2>
+        <div id="map"></div>
+      </div>
+
       <div class="chart-box">
         <h2>시간대별 혼잡도</h2>
         <svg id="congestion-chart"></svg>

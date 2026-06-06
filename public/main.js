@@ -12,6 +12,10 @@ import { renderCongestionChart } from "./js/chart.js";
 import { renderPlaceNetwork } from "./js/network.js";
 
 let currentPlaces = [];
+let map = null;
+let userMarker = null;
+let placeMarkers = [];
+let lastMapPosition = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   const weights = loadWeights();
@@ -30,7 +34,7 @@ async function handleRecommend() {
   try {
     setStatus("현재 위치를 확인하는 중입니다.");
 
-    const position = await getCurrentLocation();
+    const position = await getMap();
     const weights = readWeightsFromInputs();
     const placeType = document.getElementById("place-type").value;
 
@@ -54,6 +58,7 @@ async function handleRecommend() {
     renderPlaces(currentPlaces, handlePlaceSelect);
     renderCongestionChart(currentPlaces[0].congestionTrend);
     renderPlaceNetwork(currentPlaces, handlePlaceSelect);
+    renderPlaceMarkers(currentPlaces);
 
     setStatus("추천이 완료되었습니다.");
   } catch (error) {
@@ -92,14 +97,77 @@ function CalcPriorityThroughWeights(places) {
   return places;
 }
 
-/**
- * @abstract get map data and apply it to html.
- *
- * @returns {Promise<null>}
- */
 async function getMap() {
-  // TODO: connect map data from server later.
-  return null;
+  const position = await getCurrentLocation();
+
+  const mapData = {
+    latitude: position.latitude,
+    longitude: position.longitude,
+    fallback: position.fallback,
+  };
+
+  console.log("Current map position:", mapData);
+
+  const mapElement = document.getElementById("map");
+
+  if (!mapElement || typeof L === "undefined") {
+    return mapData;
+  }
+
+  if (!map) {
+    map = L.map("map").setView([mapData.latitude, mapData.longitude], 15);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: "&copy; OpenStreetMap contributors",
+    }).addTo(map);
+  } else {
+    map.setView([mapData.latitude, mapData.longitude], 15);
+  }
+
+  if (userMarker) {
+    userMarker.setLatLng([mapData.latitude, mapData.longitude]);
+  } else {
+    userMarker = L.marker([mapData.latitude, mapData.longitude])
+      .addTo(map)
+      .bindPopup("현재 위치");
+  }
+
+  userMarker.openPopup();
+
+  lastMapPosition = mapData;
+
+  return mapData;
+}
+
+function renderPlaceMarkers(places) {
+  if (!map || typeof L === "undefined") {
+    return;
+  }
+
+  placeMarkers.forEach((marker) => marker.remove());
+  placeMarkers = [];
+
+  places.forEach((place, index) => {
+    const latitude = Number(place.latitude ?? place.LATITUDE ?? place.lat);
+    const longitude = Number(place.longitude ?? place.LONGITUDE ?? place.lng);
+
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+      console.warn(`좌표가 없어 마커를 표시하지 않음: ${place.name ?? place.KOR_NM}`);
+      return;
+    }
+
+    const marker = L.marker([latitude, longitude])
+      .addTo(map)
+      .bindPopup(`
+        <strong>${index + 1}위. ${place.name ?? place.KOR_NM}</strong><br />
+        유형: ${place.category ?? place.CATEGORY ?? "정보 없음"}<br />
+        혼잡도: ${place.crowdLevel ?? place.density ?? "정보 없음"}<br />
+        쉼표 지수: ${place.restScore ?? "계산 전"}
+      `);
+
+    placeMarkers.push(marker);
+  });
 }
 
 /**

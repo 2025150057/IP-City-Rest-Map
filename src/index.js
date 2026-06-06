@@ -83,7 +83,7 @@ app.get("/search-loc", (req, res) => {
 });
 
 app.post("/api/recommend", async (req, res) => {
-	console.log("recommending!");
+	//console.log("recommending!");
 	const data = await requestRecomendPlaces(req.body);
 
 	res.json({ places: data });

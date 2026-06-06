@@ -4,7 +4,9 @@ export const DEFAULT_WEIGHTS = {
   distance: 0.3,
   crowd: 0.4,
   air: 0.2,
-  type: 0.1
+  cafe: 0.2,
+  park: 0.1,
+  walk: 0.5,
 };
 
 export function loadWeights() {
@@ -30,7 +32,9 @@ export function readWeightsFromInputs() {
     distance: Number(document.getElementById("weight-distance").value),
     crowd: Number(document.getElementById("weight-crowd").value),
     air: Number(document.getElementById("weight-air").value),
-    type: Number(document.getElementById("weight-type").value)
+    cafe: Number(document.getElementById("weight-cafe").value),
+    park: Number(document.getElementById("weight-park").value),
+    walk: Number(document.getElementById("weight-walk").value)
   };
 }
 
@@ -38,5 +42,7 @@ export function applyWeightsToInputs(weights) {
   document.getElementById("weight-distance").value = weights.distance;
   document.getElementById("weight-crowd").value = weights.crowd;
   document.getElementById("weight-air").value = weights.air;
-  document.getElementById("weight-type").value = weights.type;
+  document.getElementById("weight-cafe").value = weights.cafe;
+  document.getElementById("weight-park").value = weights.park;
+  document.getElementById("weight-walk").value = weights.walk;
 }

@@ -1,6 +1,6 @@
 
 //import places data.
-import places from "../datas/output.json";
+import places from "../../datas/output.json";
 
 
 /**
@@ -16,7 +16,7 @@ import places from "../datas/output.json";
  * @returns {Array} array of places.
  * 
  */
-export default async function getClosestPlaceName(coords, num) {
+export default async function getClosestPlaceName(coords, num = 3) {
     const longitude = coords.longitude;
     const latitude = coords.latitude;
 

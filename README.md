@@ -36,7 +36,7 @@ and make any progress in there, send a merge request.
  - for backend devs, We're currently using 'express' and 'node.js' for backend stuff, to ensure this lecture's materials help you.
 
  - also, we're currently running our server with cloudflare, managed by me. 
-  whole project is deployed at https://ip-city-rest-map-revive.dhs2025.workers.dev/ 
+  whole project is deployed at https://ip-city-rest-map.dhs2025.workers.dev/ 
   if you need to update deployed version, just email to dhs2025@yonsei.ac.kr or ask me to get a permission in
   cloudflare dashboard. 
 

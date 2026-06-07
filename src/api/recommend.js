@@ -14,26 +14,32 @@ const DEFAULT_SCORE = 0;
  * @param {Object} weights 
  * @returns {{ restScore: number, subScores: Object }}
  */
+//note that weights are in between [0,1]. 
 export function calculateRestScore(place, weights) {
-    //note that weights are in between [0,1]. 
 
     // 1. Distance Score: 100 max, penalty based on distance in meters (drops to 0 at 1500m)
     const score_distance = Math.max(0, 100 - (place.distance / 15));
 
     // 2. Crowd Score: Less crowded is better
     let score_crowd = 50;
-    if (place.crowdLevel === "여유") score_crowd = 100;
-    else if (place.crowdLevel === "보통") score_crowd = 70;
-    else if (place.crowdLevel === "약간 붐빔") score_crowd = 40;
+    if (place.crowdLevel === "여유") score_crowd = 70;
+    else if (place.crowdLevel === "보통") score_crowd = 50;
+    else if (place.crowdLevel === "약간 붐빔") score_crowd = 30;
     else if (place.crowdLevel === "붐빔") score_crowd = 10;
 
-    // 3. Air Quality Score: Step function for PM10
+    // 3. Air Quality Score: Step function for pm10 & pm25 and air_quality
     let score_air = 50;
-    const pm10 = place.pm10 || 30;
-    if (pm10 <= 30) score_air = 100;
-    else if (pm10 <= 80) score_air = 70;
-    else if (pm10 <= 150) score_air = 40;
-    else score_air = 10;
+    // pm10: 200 worst, good 50-. average: 125, root of variance: maybe 20? 
+    // pm2.5 : 200 worst(at very rare) good ? average 100? var:30?
+    // air_quality: "좋음", "보통", "나쁨", "매우나쁨"
+    // but.... by the fact that air_quality heavily depends on pm10 and pm2.5, just using two would be better i guess??
+    score_air -= ((place.pm10 - 125) / 125) * 15; // normalize
+    score_air -= ((place.pm25 - 100) / 100) * 15;
+
+
+
+
+
 
     // 4. Type Score: a score that is written in weight object.
     let score_type = 0;
@@ -41,7 +47,9 @@ export function calculateRestScore(place, weights) {
         score_type = weights.cafe * 100;
     }
     else if (place.type === "park") {
-        score_type = weights.park * 100;
+        // even if we search for walk, park also appears in response.
+        score_type = weights.park * 80;
+        score_type += weights.walk * 20
     }
     else if (place.type === "walk") {
         score_type = weights.walk * 100;
@@ -59,13 +67,15 @@ export function calculateRestScore(place, weights) {
         (score_air * (w.air || 0)) +
         (score_type)
     ) / totalWeight;
-
     return {
         restScore: score.toFixed(2),
         subScores: {
             distance: score_distance,
             crowd: score_crowd,
             air: score_air,
+            cafe: (place.type === "cafe") ? score_type : 0,
+            park: (place.type === "park") ? score_type : 0,
+            walk: (place.type === "walk") ? score_type : 0,
             type: score_type
         }
     };
@@ -146,7 +156,6 @@ function generateCongestionTrend(congestionTrend) {
             value: numericValue
         });
     }
-
     return trendValues;
 }
 
@@ -206,9 +215,10 @@ export default async function requestRecomendPlaces(user_data, place_types) {
                 };
 
                 // Compute priority-weighted restScore and assign metadata
-                const scoreResult = calculateRestScore(mappedPlace, user_data.weights);
-                mappedPlace.restScore = scoreResult.restScore;
-                mappedPlace.reason = generateReason(scoreResult.subScores, user_data.weights, mappedPlace);
+                const { restScore, subScores } = calculateRestScore(mappedPlace, user_data.weights);
+                mappedPlace.restScore = restScore;
+                mappedPlace.subScores = subScores;
+                mappedPlace.reason = generateReason(subScores, user_data.weights, mappedPlace);
                 mappedPlace.congestionTrend = generateCongestionTrend(mappedPlace.congestionTrend);
 
                 recommended_places.push(mappedPlace);
@@ -235,5 +245,6 @@ export default async function requestRecomendPlaces(user_data, place_types) {
     const end = Number.isFinite(count) ? page * count : recommended_places.length;
 
     const result = recommended_places.slice(start, end);
+    console.log(result);
     return result;
 }

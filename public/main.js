@@ -57,7 +57,7 @@ async function handleRecommend() {
 
     renderPlaces(currentPlaces, handlePlaceSelect);
     renderCongestionChart(currentPlaces[0].congestionTrend);
-    renderPlaceNetwork(currentPlaces, handlePlaceSelect);
+    renderPlaceNetwork(currentPlaces, position, handlePlaceSelect);
     renderPlaceMarkers(currentPlaces);
 
     setStatus("추천이 완료되었습니다.");

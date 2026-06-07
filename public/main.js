@@ -194,7 +194,7 @@ async function getMap() {
     fallback: position.fallback
   };
 
-  console.log("Current map position:", mapData);
+  //console.log("Current map position:", mapData);
 
   const mapElement = document.getElementById("map");
 
@@ -246,10 +246,10 @@ function renderPlaceMarkers(places) {
     const marker = L.marker([latitude, longitude])
       .addTo(map)
       .bindPopup(`
-        <strong>${index + 1}위. ${place.KOR_NM}</strong><br />
+        <strong>${index + 1}위. ${place.name}</strong><br />
         유형: ${place.category}<br />
         혼잡도: ${place.crowdLevel}<br />
-        쉼표 지수: ${place.restScore}
+        쉼표 지수: ${Math.round(place.restScore)}
       `);
 
     placeMarkers.push(marker);

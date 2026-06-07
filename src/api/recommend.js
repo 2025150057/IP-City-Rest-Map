@@ -61,7 +61,7 @@ export function calculateRestScore(place, weights) {
     ) / totalWeight;
 
     return {
-        restScore: Math.round(score),
+        restScore: score,
         subScores: {
             distance: score_distance,
             crowd: score_crowd,

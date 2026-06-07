@@ -20,6 +20,8 @@ let userMarker = null;
 let placeMarkers = [];
 let lastMapPosition = null;
 
+let user_position = null;
+
 document.addEventListener("DOMContentLoaded", () => {
   const weights = loadWeights();
   applyWeightsToInputs(weights);
@@ -41,6 +43,7 @@ async function handleRecommend() {
     setStatus("현재 위치를 확인하는 중입니다.");
 
     const position = await getMap();
+    user_position = position;
     const weights = readWeightsFromInputs();
     const placeType = document.getElementById("place-type").value;
 
@@ -73,7 +76,7 @@ async function handleRecommend() {
       renderCongestionChart(firstPlace.congestionTrend);
     }
 
-    renderPlaceNetwork(getVisiblePlaces(), handlePlaceSelect);
+    renderPlaceNetwork(getVisiblePlaces(), position, handlePlaceSelect);
     renderPlaceMarkers(getVisiblePlaces());
 
     setStatus(`추천이 완료되었습니다. 총 ${currentPlaces.length}개의 장소를 찾았습니다.`);
@@ -126,7 +129,7 @@ function handleLoadMore() {
   const visiblePlaces = getVisiblePlaces();
 
   renderPlaces(visiblePlaces, handlePlaceSelect);
-  renderPlaceNetwork(visiblePlaces, handlePlaceSelect);
+  renderPlaceNetwork(visiblePlaces, user_position, handlePlaceSelect);
   renderPlaceMarkers(visiblePlaces);
   updateLoadMoreButton();
 

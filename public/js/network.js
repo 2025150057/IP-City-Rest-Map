@@ -40,23 +40,13 @@ export function renderPlaceNetwork(places, onSelect) {
   })
   const NUM_OF_SCORE_TYPES = 4
 
-  places.forEach((place) => {
-    const angle = (Math.PI * 2) / NUM_OF_SCORE_TYPES;
-    const radius = 2;
-    let direction = 0;
-    if (distance_based_places.includes(place)) {
-      direction = 0;
-    }
-    else if (crowdedness_based_places.includes(place)) {
-      direction = 1;
-    }
-    else if (air_based_places.includes(place)) {
-      direction = 2;
-    }
-    else {
-      direction = 3;
-    }
+  const angle = (Math.PI * 2) / NUM_OF_SCORE_TYPES;
+  const radius = 2;
+  let direction = 0;
 
+  for (let i = 0; i < distance_based_places.length; i++) {
+    let place = distance_based_places[i];
+    direction = 0;
     graph.addNode(place.id, {
       label: place.name,
       x: Math.cos(angle * direction) * radius,
@@ -65,9 +55,70 @@ export function renderPlaceNetwork(places, onSelect) {
       color: getNodeColor(place),
       place
     });
+    if (distance_based_places[0] === place) {
+      graph.addEdge("user", place.id);
+    }
+    else {
+      graph.addEdge(distance_based_places[i - 1].id, place.id);
+    }
+  }
 
-    graph.addEdge("user", place.id);
-  });
+  for (let i = 0; i < crowdedness_based_places.length; i++) {
+    let place = crowdedness_based_places[i];
+    direction = 1;
+    graph.addNode(place.id, {
+      label: place.name,
+      x: Math.cos(angle * direction) * radius,
+      y: Math.sin(angle * direction) * radius,
+      size: Math.max(6, Math.pow(place.restScore, 1.2) / 8),
+      color: getNodeColor(place),
+      place
+    });
+    if (crowdedness_based_places[0] === place) {
+      graph.addEdge("user", place.id);
+    }
+    else {
+      graph.addEdge(crowdedness_based_places[i - 1].id, place.id);
+    }
+  }
+
+  for (let i = 0; i < air_based_places.length; i++) {
+    let place = air_based_places[i];
+    direction = 2;
+    graph.addNode(place.id, {
+      label: place.name,
+      x: Math.cos(angle * direction) * radius,
+      y: Math.sin(angle * direction) * radius,
+      size: Math.max(6, Math.pow(place.restScore, 1.2) / 8),
+      color: getNodeColor(place),
+      place
+    });
+    if (air_based_places[0] === place) {
+      graph.addEdge("user", place.id);
+    }
+    else {
+      graph.addEdge(air_based_places[i - 1].id, place.id);
+    }
+  }
+  for (let i = 0; i < type_based_places.length; i++) {
+    let place = type_based_places[i];
+    direction = 3;
+    graph.addNode(place.id, {
+      label: place.name,
+      x: Math.cos(angle * direction) * radius,
+      y: Math.sin(angle * direction) * radius,
+      size: Math.max(6, Math.pow(place.restScore, 1.2) / 8),
+      color: getNodeColor(place),
+      place
+    });
+    if (type_based_places[0] === place) {
+      graph.addEdge("user", place.id);
+    }
+    else {
+      graph.addEdge(type_based_places[i - 1].id, place.id);
+    }
+  }
+
 
   renderer = new Sigma(graph, container);
 

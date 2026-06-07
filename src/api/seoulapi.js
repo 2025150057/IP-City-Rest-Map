@@ -22,10 +22,17 @@ export default async function getDensity(datas) {
 
             try {
                 const res = await search_loc(area_cd, 1, 1);
-                const density_data = res?.["SeoulRtd.citydata_ppltn"]?.[0];
+                const density_data = res?.CITYDATA?.LIVE_PPLTN_STTS?.[0];
+                // get pptln(population) data.
                 place.density = density_data?.AREA_CONGEST_LVL || "null";
 
                 place.FCST_PPLTN = density_data?.FCST_PPLTN || null;
+
+                const weather_data = res?.CITYDATA?.WEATHER_STTS[0];
+                // get weather data, most importantly including pm10.
+                place.pm10 = weather_data?.PM10 || null;
+                place.pm25 = weather_data?.PM25 || null;
+                place.air_quality = weather_data?.AIR_IDX || "null";
 
             } catch (err) {
                 console.error(err);
@@ -67,7 +74,7 @@ export async function search_loc(loc_name, page_start = 1, page_end = 1) {
     const seoul_api_url = "http://openapi.seoul.go.kr:8088/" +
         seoul_api_key +
         "/json" +
-        "/citydata_ppltn" +
+        "/citydata" +
         "/" + String(page_start) +
         "/" + String(page_end) +
         "/" + loc_name;

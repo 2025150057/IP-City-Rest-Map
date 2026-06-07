@@ -199,9 +199,9 @@ export default async function requestRecomendPlaces(user_data, place_types) {
                     longitude: lon,
                     distance: distanceMeters,
                     crowdLevel: place.density,
-                    pm10: 30, // TODO
-                    pm25: 15, // TODO also XD
-                    air_quality: "좋음",
+                    pm10: place.pm10,
+                    pm25: place.pm25,
+                    air_quality: place.air_quality,
                     congestionTrend: place.FCST_PPLTN
                 };
 

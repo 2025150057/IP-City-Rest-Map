@@ -4,6 +4,7 @@ import { searchNearbyRestAreas } from "./api/map.js";
 import getClosestPlaceName from "./api/gps.js";
 import getDensity, { search_loc } from "./api/seoulapi.js";
 import requestRecomendPlaces from "./api/recommend.js";
+import feedback from "./api/feedback.js";
 
 /**
  * Run a test function only in development environment.
@@ -90,7 +91,8 @@ app.post("/api/recommend", async (req, res) => {
 });
 
 app.post("/api/feedback", async (req, res) => {
-	const data = await feedback(req.body);
+	const { selectedPlace, weights } = req.body;
+	const data = await feedback(selectedPlace, weights);
 
 	res.json({ weights: data });
 });

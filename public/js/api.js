@@ -1,6 +1,6 @@
 import { mockRecommendation } from "./mockData.js";
 
-const USE_MOCK = true;
+const USE_MOCK = false;
 
 export async function requestRecommendation(position, weights, placeType) {
 

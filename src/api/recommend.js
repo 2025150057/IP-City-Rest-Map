@@ -14,7 +14,7 @@ const DEFAULT_SCORE = 0;
  * @param {Object} weights 
  * @returns {{ restScore: number, subScores: Object }}
  */
-function calculateRestScore(place, weights) {
+export function calculateRestScore(place, weights) {
     //note that weights are in between [0,1]. 
 
     // 1. Distance Score: 100 max, penalty based on distance in meters (drops to 0 at 1500m)
@@ -199,8 +199,8 @@ export default async function requestRecomendPlaces(user_data, place_types) {
                     longitude: lon,
                     distance: distanceMeters,
                     crowdLevel: place.density,
-                    pm10: 30, // simulated
-                    pm25: 15, // simulated
+                    pm10: 30, // TODO
+                    pm25: 15, // TODO also XD
                     air_quality: "좋음",
                     congestionTrend: place.FCST_PPLTN
                 };
@@ -228,6 +228,12 @@ export default async function requestRecomendPlaces(user_data, place_types) {
     // Sort recommended places by restScore descending
     recommended_places.sort((a, b) => b.restScore - a.restScore);
 
-    const result = requested_places.slice((user_data.page - 1) * user_data.count, user_data.page * user_data.count);
+    const page = user_data.page || 1;
+    const count = typeof user_data.count === "number" ? user_data.count : recommended_places.length;
+
+    const start = Number.isFinite(count) ? (page - 1) * count : 0;
+    const end = Number.isFinite(count) ? page * count : recommended_places.length;
+
+    const result = recommended_places.slice(start, end);
     return result;
 }

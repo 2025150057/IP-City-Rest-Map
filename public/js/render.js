@@ -17,7 +17,7 @@ export function renderPlaces(places, onSelect) {
       <p>거리: ${place.distance}m</p>
       <p>혼잡도: ${place.crowdLevel}</p>
       <p>대기질: PM10 ${place.pm10}, PM2.5 ${place.pm25}</p>
-      <p>쉼표 지수: ${place.restScore}</p>
+      <p>쉼표 지수: ${Math.round(place.restScore)}</p>
       <p>${place.reason}</p>
       <button type="button">이 장소 선택</button>
     `;

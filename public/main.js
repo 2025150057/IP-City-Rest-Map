@@ -258,3 +258,9 @@ function renderPlaceMarkers(places) {
     placeMarkers.push(marker);
   });
 }
+
+
+function clearPlaceMarkers() {
+  placeMarkers.forEach((marker) => marker.remove());
+  placeMarkers = [];
+}

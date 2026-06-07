@@ -132,3 +132,13 @@ body {
     height: 300px;
   }
 }
+
+#load-more-button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}

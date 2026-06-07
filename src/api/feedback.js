@@ -40,6 +40,5 @@ export default async function feedback(selectedPlace, weights) {
     new_weights.park = (weights.park * (1 - learning_rate) + learning_rate * (score_park / 100));
     new_weights.walk = (weights.walk * (1 - learning_rate) + learning_rate * (score_walk / 100));
 
-    console.log("Updated weights:", new_weights);
     return new_weights;
 }

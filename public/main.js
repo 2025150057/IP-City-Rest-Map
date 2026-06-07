@@ -30,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (recommendButton) {
     recommendButton.addEventListener("click", handleRecommend);
-    console.log(readWeightsFromInputs());
   }
 
   ensureLoadMoreButton();
@@ -197,7 +196,7 @@ async function getMap() {
     fallback: position.fallback
   };
 
-  //console.log("Current map position:", mapData);
+
 
   const mapElement = document.getElementById("map");
 
@@ -264,7 +263,6 @@ function clearPlaceMarkers() {
   placeMarkers.forEach((marker) => marker.remove());
   placeMarkers = [];
 }
-
 
 function focusPlaceOnMap(place) {
   if (!map || typeof L === "undefined") {

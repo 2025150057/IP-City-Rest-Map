@@ -22,7 +22,6 @@ export async function requestRecommendation(position, weights, placeType) {
       placeType: normalizePlaceTypes(placeType)
     })//applied 2.
   });
-
   if (!response.ok) {
     throw new Error("추천 요청 실패");
   }

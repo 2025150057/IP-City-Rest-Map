@@ -30,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (recommendButton) {
     recommendButton.addEventListener("click", handleRecommend);
-    console.log(readWeightsFromInputs());
   }
 
   ensureLoadMoreButton();
@@ -197,7 +196,7 @@ async function getMap() {
     fallback: position.fallback
   };
 
-  //console.log("Current map position:", mapData);
+
 
   const mapElement = document.getElementById("map");
 
@@ -263,4 +262,32 @@ function renderPlaceMarkers(places) {
 function clearPlaceMarkers() {
   placeMarkers.forEach((marker) => marker.remove());
   placeMarkers = [];
+}
+
+function focusPlaceOnMap(place) {
+  if (!map || typeof L === "undefined") {
+    return;
+  }
+
+  const latitude = place.latitude;
+  const longitude = place.longitude;
+
+  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+    return;
+  }
+
+  map.setView([latitude, longitude], 16);
+
+  const matchedMarker = placeMarkers.find((marker) => {
+    const markerPosition = marker.getLatLng();
+
+    return (
+      Math.abs(markerPosition.lat - latitude) < 0.000001 &&
+      Math.abs(markerPosition.lng - longitude) < 0.000001
+    );
+  });
+
+  if (matchedMarker) {
+    matchedMarker.openPopup();
+  }
 }

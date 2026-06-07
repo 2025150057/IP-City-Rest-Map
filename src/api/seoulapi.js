@@ -12,7 +12,6 @@
 
 export default async function getDensity(datas) {
 
-    //console.log(datas);
     const densityData = await Promise.all(
         datas.map(async (place) => {
             const area_cd = place.AREA_CD;
@@ -44,7 +43,6 @@ export default async function getDensity(datas) {
         })
     );
 
-    //console.log(densityData);
     return densityData;
 }
 
@@ -61,7 +59,6 @@ export default async function getDensity(datas) {
  */
 export async function search_loc(loc_name, page_start = 1, page_end = 1) {
 
-    //console.log(loc_name);
     const seoul_api_key = process.env.SEOUL_API_KEY || null;
 
     if (seoul_api_key === null) {
@@ -82,7 +79,6 @@ export async function search_loc(loc_name, page_start = 1, page_end = 1) {
     try {
         const data = await fetch(seoul_api_url);
         const JSONdata = await data.json();
-        //console.log("success, ", JSON.stringify(JSONdata, null, 2));
 
         return JSONdata;
 

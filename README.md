@@ -9,12 +9,24 @@ git clone https://github.com/2025150057/IP-City-Rest-Map
 after cloning, (make sure you are in 
 right folder) type
 npm install
-for installing requirements(currently express.js)
+for installing requirements(currently express.js) * and nodemon *
 
 type
 npm run dev
 for developer launching. (also, make sure
 requirements are set)
+
+- and also, if you've seen .gitignore file, this project uses .env file to save api keys.
+of course deployed version would not have any problem, but if you need to fork it or make a new branch to test some things or like that, make a .env file and put 
+
+KAKAO_REST_API_KEY = YOUR_KEY_HERE
+
+SEOUL_API_KEY = YOUR_KEY_HERE
+
+those two lines. hopefully, npm would detect your .env file.
+
+
+
 
 # HOW TO CONTRIBUTE
 make a new branch start with dev.

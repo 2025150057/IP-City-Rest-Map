@@ -8,7 +8,7 @@ Followed by a pdf's service scenario.
 2. server gets a gps data. 
 3. server finds a closest location of 0.
 
-# handling a seoul api. (COMPLETED...?)
+# handling a seoul api. (COMPLETED...!)
 1. server sends a request to seoul api.
 2. api sends a response(density datas, mirco dust datas) to server.
 3. server parses the response and sends it to the front-end.
@@ -17,7 +17,7 @@ Followed by a pdf's service scenario.
 1. server sends a request to kakao api.
 2. api sends a place datas to server.
 
-# handling a weight.
+# handling a weight. (COMPLETED!)
 1. user sends a preallocated weights to server.
 2. server calculates a place's scores according to 1.
 3. server sends a ranking list to user.
@@ -25,7 +25,7 @@ Followed by a pdf's service scenario.
 5. server sends a detailed datas, and server modifies weights.
 6. user modifies weights.
 
-# frontend work
+# frontend work (COMPLETED!)
 0. design front-end.
 1. get places data and show it at graph using d3.js and sigma.js
 

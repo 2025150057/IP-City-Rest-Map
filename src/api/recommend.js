@@ -36,11 +36,6 @@ export function calculateRestScore(place, weights) {
     score_air -= ((place.pm10 - 125) / 125) * 15; // normalize
     score_air -= ((place.pm25 - 100) / 100) * 15;
 
-
-
-
-
-
     // 4. Type Score: a score that is written in weight object.
     let score_type = 0;
     if (place.type === "cafe") {
@@ -177,14 +172,11 @@ function generateCongestionTrend(congestionTrend) {
  */
 export default async function requestRecomendPlaces(user_data, place_types) {
     let recommended_places = [];
-    console.log(user_data.weights);
     const types = place_types || user_data.placeType || ["산책", "카페", "공원"];
 
     const closest_place_names = await getClosestPlaceName({ latitude: user_data.position.latitude, longitude: user_data.position.longitude });
 
     const closest_place_including_density_data = await getDensity(closest_place_names);
-
-    //console.log(closest_place_including_density_data);
 
     await Promise.all(closest_place_including_density_data.map(async (place) => {
         for (let place_type of types) {
@@ -248,5 +240,6 @@ export default async function requestRecomendPlaces(user_data, place_types) {
     // Sort recommended places by restScore descending
     recommended_places.sort((a, b) => b.restScore - a.restScore);
     //applied 1.
+
     return recommended_places;
 }

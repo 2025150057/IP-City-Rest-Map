@@ -5,7 +5,10 @@ import {
     findClosestLocation,
     searchNearbyRestAreas
 } from "./src/map.js";
-
+// UNUSED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// because, vitest module had a conflict with cloudflare's module, 
+// and I dini't knew it, SO I SPENT OVER 5 HOURS!!!!!!!
+// So, just, ignore this file.
 dotenv.config();
 
 // API testing

@@ -84,7 +84,7 @@ export async function searchNearbyByKeyword(keyword, longitude, latitude, radius
     }
 }
 
-// probably what we will actually use
+// probably what we will actually use <--- um.... saddly, narrowing keyword only to '쉼터' was toooo small.. what a disappoint...
 export async function searchNearbyRestAreas(longitude, latitude, radius = 1000, size = 15) {
     return searchNearbyByKeyword("쉼터", longitude, latitude, radius, size);
 }

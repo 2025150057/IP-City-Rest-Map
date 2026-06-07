@@ -7,8 +7,6 @@ export async function requestRecommendation(position, weights, placeType) {
     return mockRecommendation;
   }
 
-  const normalizedPlaceTypes = normalizePlaceTypes(placeType);
-  const normalizedWeights = normalizeWeights(weights, placeType);
 
   const response = await fetch("/api/recommend/", {
     method: "POST",
@@ -20,13 +18,9 @@ export async function requestRecommendation(position, weights, placeType) {
         latitude: position.latitude,
         longitude: position.longitude
       },
-      latitude: position.latitude,
-      longitude: position.longitude,
-      lat: position.latitude,
-      lng: position.longitude,
-      weights: normalizedWeights,
-      placeType: normalizedPlaceTypes
-    })
+      weights: weights,
+      placeType: normalizePlaceTypes(placeType)
+    })//applied 2.
   });
 
   if (!response.ok) {
@@ -106,39 +100,4 @@ function normalizePlaceTypes(placeType) {
   }
 
   return ["산책", "카페", "공원"];
-}
-
-function normalizeWeights(weights, placeType) {
-  const safeWeights = weights || {};
-
-  const distance = Number(safeWeights.distance ?? 0.3);
-  const crowd = Number(safeWeights.crowd ?? 0.4);
-  const air = Number(safeWeights.air ?? 0.2);
-  const type = Number(safeWeights.type ?? 0.1);
-
-  let cafe = 0;
-  let park = 0;
-  let walk = 0;
-
-  if (placeType === "cafe") {
-    cafe = type;
-  } else if (placeType === "park") {
-    park = type;
-  } else if (placeType === "walk") {
-    walk = type;
-  } else {
-    cafe = type / 3;
-    park = type / 3;
-    walk = type / 3;
-  }
-
-  return {
-    distance,
-    crowd,
-    air,
-    type,
-    cafe,
-    park,
-    walk
-  };
 }

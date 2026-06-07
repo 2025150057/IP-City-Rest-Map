@@ -153,12 +153,22 @@ function generateCongestionTrend(congestionTrend) {
 /**
  * @abstract request recommended places.
  * @param {Object} user_data - user data.
+ * @param {Object} user_data.position
+ * @param {Number} user_data.position.longitude - longitude of user
+ * @param {Number} user_data.position.latitude - latitude of user.
+ * @param {Object} user_data.weights - weights of user.
+ * @param {Number} user_data.weights.distance - distance weight.
+ * @param {Number} user_data.weights.crowd - crowd weight.
+ * @param {Number} user_data.weights.air - air weight.
+ * @param {Number} user_data.weights.cafe - a weight for cafe.
+ * @param {Number} user_data.weights.park - a weight for park.
+ * @param {Number} user_data.weights.walk - a weight for walk.
  * @param {Array} [place_types] - place types.
  * @returns {Promise<Array>} server response.
  */
 export default async function requestRecomendPlaces(user_data, place_types) {
     let recommended_places = [];
-
+    console.log(user_data.weights);
     const types = place_types || user_data.placeType || ["산책", "카페", "공원"];
 
     const closest_place_names = await getClosestPlaceName({ latitude: user_data.position.latitude, longitude: user_data.position.longitude });
@@ -227,13 +237,6 @@ export default async function requestRecomendPlaces(user_data, place_types) {
 
     // Sort recommended places by restScore descending
     recommended_places.sort((a, b) => b.restScore - a.restScore);
-
-    const page = user_data.page || 1;
-    const count = typeof user_data.count === "number" ? user_data.count : recommended_places.length;
-
-    const start = Number.isFinite(count) ? (page - 1) * count : 0;
-    const end = Number.isFinite(count) ? page * count : recommended_places.length;
-
-    const result = recommended_places.slice(start, end);
-    return result;
+    //applied 1.
+    return recommended_places;
 }

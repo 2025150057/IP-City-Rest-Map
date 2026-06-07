@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (recommendButton) {
     recommendButton.addEventListener("click", handleRecommend);
+    console.log(readWeightsFromInputs());
   }
 
   ensureLoadMoreButton();
@@ -97,7 +98,7 @@ async function handlePlaceSelect(place) {
     }
 
     focusPlaceOnMap(place);
-    setStatus(`${getPlaceName(place)} 선택이 반영되었습니다.`);
+    setStatus(`${place.name} 선택이 반영되었습니다.`);
   } catch (error) {
     console.error(error);
     setStatus("장소 선택은 되었지만 가중치 반영에 실패했습니다.");
@@ -234,21 +235,21 @@ function renderPlaceMarkers(places) {
   clearPlaceMarkers();
 
   places.forEach((place, index) => {
-    const latitude = getPlaceLatitude(place);
-    const longitude = getPlaceLongitude(place);
+    const latitude = place.latitude;
+    const longitude = place.longitude;
 
     if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
-      console.warn(`좌표가 없어 마커를 표시하지 않음: ${getPlaceName(place)}`);
+      console.warn(`좌표가 없어 마커를 표시하지 않음: ${place.KOR_NM}`);
       return;
     }
 
     const marker = L.marker([latitude, longitude])
       .addTo(map)
       .bindPopup(`
-        <strong>${index + 1}위. ${getPlaceName(place)}</strong><br />
-        유형: ${getPlaceCategory(place)}<br />
-        혼잡도: ${getPlaceCrowdLevel(place)}<br />
-        쉼표 지수: ${getPlaceRestScore(place)}
+        <strong>${index + 1}위. ${place.KOR_NM}</strong><br />
+        유형: ${place.category}<br />
+        혼잡도: ${place.crowdLevel}<br />
+        쉼표 지수: ${place.restScore}
       `);
 
     placeMarkers.push(marker);
@@ -265,8 +266,8 @@ function focusPlaceOnMap(place) {
     return;
   }
 
-  const latitude = getPlaceLatitude(place);
-  const longitude = getPlaceLongitude(place);
+  const latitude = place.latitude;
+  const longitude = place.longitude;
 
   if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
     return;
@@ -310,46 +311,4 @@ function getPlaceCrowdLevel(place) {
 
 function getPlaceRestScore(place) {
   return place.restScore ?? place.score ?? place.rest_score ?? "계산 전";
-}
-
-/**
- * @abstract get graph data.
- *
- * @returns {Promise<null>}
- */
-async function getGraph() {
-  // TODO: connect graph data from server later.
-  return null;
-}
-
-/**
- * @abstract get weights data from local storage or input elements.
- *
- * @returns {Object} weights object.
- */
-function getWeights() {
-  return readWeightsFromInputs();
-}
-
-/**
- * @abstract select places according to weights.
- *
- * @param {Array} places - array of places.
- * @returns {Array} sorted array of places.
- */
-function selectPlacesFromWeight(places) {
-  // TODO: sort places by weights later.
-  return places;
-}
-
-/**
- * @abstract update weights according to user's selected place.
- *
- * @param {Array} places - array of places.
- * @param {Object} selected - selected place.
- * @returns {null}
- */
-function updateWeightsFromSelection(places, selected) {
-  // TODO: update weights according to selected place later.
-  return null;
 }
